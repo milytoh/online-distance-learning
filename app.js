@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 
 const onlineCourseRouter = require("./routes/online-course");
+const authRouter = require('./routes/auth')
 
 // Set EJS
 app.set("view engine", "ejs");
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //routes
 app.use(onlineCourseRouter);
+app.use(authRouter)
 
 // Server
 const PORT = process.env.PORT || 3000;
