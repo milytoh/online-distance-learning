@@ -1,5 +1,7 @@
 
 <%- include('../includes/head.ejs') %>
+<title><%= title %></title>
+
 <link rel="stylesheet" type="text/css" href="styles/auth/signup.css">
 
 
@@ -24,9 +26,9 @@
 	
     <div class="form-container">
         <h2 class="bb">Create Account</h2>
-        <form action="/register" method="POST">
+        <form action="/signup" method="POST">
           
-          <input type="text" name="name" placeholder="Full Name" required>
+          <input type="text" name="fullname" placeholder="Full Name" required>
           
           <input type="email" name="email" placeholder="Email Address" required>
           
@@ -38,7 +40,7 @@
             <option value="instructor">Instructor</option>
           </select>
           
-          <button type="submit">Register</button>
+          <button type="submit">Signup</button>
           
           <p>Already have an account? <a href="/login">Login</a></p>
         </form>

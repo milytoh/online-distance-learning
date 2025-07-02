@@ -5,5 +5,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getAllCoures = (req, res, next) => {
-  res.render("onlinecourse/course-list", {});
+  res.render("onlinecourse/course-list", {
+    title: 'courses'
+  });
 };

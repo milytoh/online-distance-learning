@@ -50,7 +50,7 @@
   h2 {
     text-align: center;
     margin-bottom: 25px;
-    color: #FFD700;
+    color: #ffb606;
   }
   
   /* Form Inputs */
@@ -79,7 +79,7 @@
   
   /* Submit Button */
   form button {
-    background-color: #FFD700;
+    background-color: #ffb606;
     color: #2c2c2c;
     font-weight: bold;
     cursor: pointer;
