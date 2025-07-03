@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/instructor");
+const upload = require("../middleware/upload");
+const controller = require('../controllers/instructor')
+
+
 
 // Middleware to restrict to instructors
 const ensureInstructor = (req, res, next) => {
@@ -16,12 +19,15 @@ router.get("/instructor/dashboard", ensureInstructor, controller.getInstructorDa
 router.get(
   "/instructor/create-course",
   ensureInstructor,
-  controller.showCreateForm
+  controller.getshowCreateForm
 );
+
+
 router.post(
   "/instructor/create-course",
+  upload.single("media_file"), 
   ensureInstructor,
-  controller.createCourse
+  controller.postCreateCourse
 );
 
 module.exports = router;
