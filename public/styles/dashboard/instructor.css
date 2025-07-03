@@ -1,0 +1,101 @@
+/* Instructor Dashboard Styles */
+
+header {
+    text-align: center;
+}
+
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    margin-top: 200px;
+    text-align: center;
+  }
+  
+  .dashboard-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-container h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .create-btn {
+    background-color: #FFD700;
+    color: #222;
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .create-btn:hover {
+    background-color: #e6c200;
+  }
+  
+  /* Grid Layout */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Course Card */
+  .course-card {
+    background-color: #fff;
+    border-left: 6px solid #FFD700;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  }
+  
+  .course-card h3 {
+    color: #222;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .course-card p {
+    color: #555;
+    margin-bottom: 15px;
+    min-height: 60px;
+  }
+  
+  .course-card video,
+  .course-card img {
+    width: 100%;
+    border-radius: 5px;
+  }
+  
+  .pdf-link {
+    display: inline-block;
+    color: #FFD700;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 10px;
+  }
+  
+  .pdf-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .dashboard-container header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .create-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  

@@ -18,31 +18,26 @@
 			<div class="home_background prlx" style="background-image:url(images/courses_background.jpg)"></div>
 		</div>
 		<div class="home_content home_content-signup ">
-			<h1>REISTER TO CONINUE</h1>
+			<h1>LOGIN</h1>
+            <% if (error_msg) { %>
+                <div style="color: red"><%= error_msg %></div>
+              <% } %>
 		</div>
 	</div>
 
 
 	
     <div class="form-container">
-        <h2 class="bb">Create Account</h2>
-        <form action="/signup" method="POST">
-          
-          <input type="text" name="fullname" placeholder="Full Name" required>
-          
+        <h2 class="bb">Login</h2>
+        <form action="/login" method="POST">
+                         
           <input type="email" name="email" placeholder="Email Address" required>
           
           <input type="password" name="password" placeholder="Password" required>
+
+          <button type="submit" class="login-button">Login</button>
           
-          <select name="role" required>
-            <option value="">Select Role</option>
-            <option value="student">Student</option>
-            <option value="instructor">Instructor</option>
-          </select>
-          
-          <button type="submit">Signup</button>
-          
-          <p>Already have an account? <a href="/login">Login</a></p>
+          <p>Create new account <a href="/signup">Signup</a></p>
         </form>
       </div>
 

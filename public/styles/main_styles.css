@@ -51,6 +51,8 @@ COLOR PALETTE
 2. Body and some general stuff
 *********************************/
 
+
+
 *
 {
 	margin: 0;
@@ -67,6 +69,10 @@ body
 	background: #FFFFFF;
 	color: #a5a5a5;
 }
+
+
+
+
 div
 {
 	display: block;
