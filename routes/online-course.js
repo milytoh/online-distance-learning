@@ -7,6 +7,12 @@ const isAuth = require('../middleware/auth').auth
 
 router.get('/', onlineCoursController.getIndex);
 router.get('/courses', onlineCoursController.getAllCoures);
-router.get('/student/dashboard', isAuth, onlineCoursController.getAllCoures)
+router.get('/student/dashboard', isAuth, onlineCoursController.getAllCoures);
+router.get('/course/:id', onlineCoursController.getCourseDetail);
+router.post(
+  "/course/:id/complete",
+  isAuth,
+  onlineCoursController.markAsCompleted
+);
 
 module.exports = router;

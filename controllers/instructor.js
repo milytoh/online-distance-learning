@@ -82,3 +82,53 @@ exports.postCreateCourse = async (req, res) => {
     res.send("Error creating course");
   }
 };
+
+exports.showEditForm = async (req, res) => {
+  const courseId = req.params.id;
+
+  const [rows] = await db.execute("SELECT * FROM courses WHERE id = ?", [
+    courseId,
+  ]);
+  const course = rows[0];
+
+  if (!course || course.instructor_id !== req.session.user.id) {
+    return res.send("Unauthorized or course not found");
+  }
+
+  res.render("dashboard/course-edit", { title: "Edit Course", course, isLogin: req.session.user });
+};
+
+exports.updateCourse = async (req, res) => {
+  const courseId = req.params.id;
+  const { title, description } = req.body;
+
+  try {
+    await db.execute(
+      "UPDATE courses SET title = ?, description = ? WHERE id = ? AND instructor_id = ?",
+      [title, description, courseId, req.session.user.id]
+    );
+
+    res.redirect("/instructor/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.send("Error updating course");
+  }
+};
+
+
+exports.deleteCourse = async (req, res) => {
+  const courseId = req.params.id;
+  const instructorId = req.session.user.id;
+
+  try {
+    await db.execute("DELETE FROM courses WHERE id = ? AND instructor_id = ?", [
+      courseId,
+      instructorId,
+    ]);
+
+    res.redirect("/instructor/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.send("Error deleting course");
+  }
+};
