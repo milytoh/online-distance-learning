@@ -114,6 +114,17 @@
 				</div>
 			</div>
 
+			<form method="GET" action="/courses" style="margin-bottom: 20px;">
+				<input
+				  type="text"
+				  name="search"
+				  value="<%= searchQuery %>"
+				  placeholder="Search courses..."
+				  style="padding: 10px; width: 60%; border: 1px solid #ccc; border-radius: 5px;">
+				<button type="submit" style="padding: 10px 20px; background: #FFD700; border: none; border-radius: 5px;">Search</button>
+			  </form>
+			
+
 			<section class="courses-grid">
 				<% courses.forEach(course => { %>
 				  <!-- <div class="course-card">

@@ -6,19 +6,38 @@ const moment = require("moment");
 const db = require("../models/db");
 
 exports.getIndex = async (req, res, next) => {
+  const searchQuery = req.query.search || "";
+  // try {
+  //   // Fetch all courses + instructor name
+  //   const [courses] = await db.execute(`
+  //     SELECT c.*, u.name AS instructor_name
+  //     FROM courses c
+  //     JOIN users u ON c.instructor_id = u.id
+  //   `);
   try {
-    // Fetch all courses + instructor name
-    const [courses] = await db.execute(`
-      SELECT c.*, u.name AS instructor_name 
-      FROM courses c
-      JOIN users u ON c.instructor_id = u.id
-    `);
+    let courses;
+    if (searchQuery) {
+      [courses] = await db.execute(
+        `SELECT c.*, u.name AS instructor_name
+         FROM courses c
+         JOIN users u ON c.instructor_id = u.id
+         WHERE c.title LIKE ?`,
+        [`%${searchQuery}%`]
+      );
+    } else {
+      [courses] = await db.execute(
+        `SELECT c.*, u.name AS instructor_name
+         FROM courses c
+         JOIN users u ON c.instructor_id = u.id`
+      );
+    }
 
     res.render("index", {
       title: "Home",
       user: req.session.user,
       courses,
       isLogin: req.session.user,
+      searchQuery
     });
   } catch (err) {
     console.error(err);
@@ -27,19 +46,38 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getAllCoures = async (req, res, next) => {
+  const searchQuery = req.query.search || "";
+  // try {
+  //   // Fetch all courses + instructor name
+  //   const [courses] = await db.execute(`
+  //     SELECT c.*, u.name AS instructor_name 
+  //     FROM courses c
+  //     JOIN users u ON c.instructor_id = u.id
+  //   `);
   try {
-    // Fetch all courses + instructor name
-    const [courses] = await db.execute(`
-      SELECT c.*, u.name AS instructor_name 
-      FROM courses c
-      JOIN users u ON c.instructor_id = u.id
-    `);
+    let courses;
+    if (searchQuery) {
+      [courses] = await db.execute(
+        `SELECT c.*, u.name AS instructor_name
+         FROM courses c
+         JOIN users u ON c.instructor_id = u.id
+         WHERE c.title LIKE ?`,
+        [`%${searchQuery}%`]
+      );
+    } else {
+      [courses] = await db.execute(
+        `SELECT c.*, u.name AS instructor_name
+         FROM courses c
+         JOIN users u ON c.instructor_id = u.id`
+      );
+    }
 
     res.render("onlinecourse/course-list", {
       title: "Student Dashboard",
       user: req.session.user,
       courses,
       isLogin: req.session.user,
+      searchQuery
     });
   } catch (err) {
     console.error(err);
@@ -147,6 +185,15 @@ exports.downloadCertificate = async (req, res) => {
       [studentId]
     );
 
+    const [[instructor]] = await db.execute(
+      `
+      SELECT u.name FROM users u
+      JOIN courses c ON u.id = c.instructor_id
+      WHERE c.id = ?
+    `,
+      [courseId]
+    );
+
     if (!course || !student) return res.send("Invalid data");
 
     const [completionRows] = await db.execute(
@@ -225,7 +272,20 @@ exports.downloadCertificate = async (req, res) => {
     doc
       .fontSize(16)
       .fillColor("#000")
-      .text("– Varify Learn LMS", { align: "center" });
+      .text(" ", { align: "center" });
+
+    // Signature section
+    doc.moveDown(5);
+
+    // Position signature at bottom right
+    doc
+      .fontSize(14)
+      .fillColor("#444")
+      .text("__________________________", 430, 400, { align: "left" });
+
+    doc.fontSize(12).text(instructor.name || "Course Instructor", 430, 420, {
+      align: "left",
+    });
 
     doc.end();
   } catch (err) {
