@@ -46,6 +46,18 @@ router.post(
   controller.deleteCourse
 );
 
+router.get(
+  "/instructor/comments",
+  ensureInstructor,
+  controller.viewComments
+);
+router.post(
+  "/instructor/comments/:id/reply",
+  ensureInstructor,
+  controller.replyToComment
+);
+
+
 
 
 

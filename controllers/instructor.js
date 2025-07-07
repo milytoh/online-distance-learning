@@ -132,3 +132,58 @@ exports.deleteCourse = async (req, res) => {
     res.send("Error deleting course");
   }
 };
+
+
+exports.viewComments = async (req, res) => {
+  const instructorId = req.session.user.id;
+
+  const [comments] = await db.execute(
+    `
+    SELECT c.*, u.name AS student_name, co.title AS course_title
+    FROM comments c
+    JOIN users u ON c.student_id = u.id
+    JOIN courses co ON c.course_id = co.id
+    WHERE co.instructor_id = ?
+    ORDER BY c.created_at DESC
+  `,
+    [instructorId]
+  );
+
+  res.render("dashboard/view-comments", {
+    title: "Student Comments",
+    comments,
+  });
+};
+
+exports.replyToComment = async (req, res) => {
+  const commentId = req.params.id;
+  const { reply } = req.body;
+  const instructorId = req.session.user.id;
+
+  try {
+    // Verify comment belongs to instructor's course
+    const [rows] = await db.execute(
+      `
+      SELECT c.id FROM comments c
+      JOIN courses co ON c.course_id = co.id
+      WHERE c.id = ? AND co.instructor_id = ?
+    `,
+      [commentId, instructorId]
+    );
+
+    if (rows.length === 0) return res.send("Unauthorized");
+
+    await db.execute("UPDATE comments SET reply = ? WHERE id = ?", [
+      reply,
+      commentId,
+    ]);
+
+    res.redirect("/instructor/comments");
+  } catch (err) {
+    console.error(err);
+    res.send("Error replying to comment");
+  }
+};
+
+
+

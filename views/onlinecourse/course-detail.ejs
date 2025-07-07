@@ -78,12 +78,27 @@
       </form>
       
       <div class="comments-section">
-        <% comments.forEach(comment => { %>
+        <!-- <% comments.forEach(comment => { %>
           <div class="comment-box">
             <p><strong><%= comment.student_name %></strong> <small><%= comment.created_at.toLocaleString() %></small></p>
             <p><%= comment.content %></p>
           </div>
-        <% }) %>
+        <% }) %> -->
+        <div class="comments-section">
+          <% comments.forEach(comment => { %>
+            <div class="comment-box">
+              <p><strong><%= comment.student_name %></strong> <small><%= comment.created_at.toLocaleString() %></small></p>
+              <p><%= comment.content %></p>
+        
+              <% if (comment.reply) { %>
+                <div class="reply-box">
+                  <p><strong>Instructor:</strong> <%= comment.reply %></p>
+                </div>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+        
       </div>
       
     

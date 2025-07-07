@@ -5,7 +5,10 @@
     padding: 0;
   } */ */
 
- 
+  .view-commets {
+    margin-top: 40px;
+  } 
+
   
   body {
     font-family: 'Segoe UI', sans-serif;

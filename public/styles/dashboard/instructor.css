@@ -139,6 +139,8 @@ header {
     border-radius: 6px;
     margin-bottom: 15px;
   }
+
+  
   
   .edit-btn {
     background-color: #FFD700;
@@ -158,6 +160,81 @@ header {
   .delete-btn:hover {
     background-color: #d32f2f;
   }
+
+
+  /* view comments */
+
+.comments-wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.comment-box {
+  background: #f9f9f9;
+  padding: 15px 20px;
+  border-left: 5px solid #FFD700;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.comment-box p {
+  margin: 5px 0;
+}
+
+.comment-box small {
+  color: #888;
+  font-size: 12px;
+}
+
+.reply-box {
+  background: #fffbe6;
+  padding: 10px;
+  margin-top: 10px;
+  border-left: 4px solid #FFD700;
+  border-radius: 6px;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.submit-btn {
+  background-color: #FFD700;
+  color: #222;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #444;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+h2 {
+  margin-bottom: 25px;
+  text-align: center;
+  color: #222;
+}
+
   
   
   /* Responsive */

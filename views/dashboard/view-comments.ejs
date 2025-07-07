@@ -1,0 +1,33 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" type="text/css" href="/styles/dashboard/instructor.css">
+
+
+<div class="comments-wrapper">
+  <h2>💬 Student Comments & Replies</h2>
+
+  <% if (comments.length === 0) { %>
+    <p>No comments yet.</p>
+  <% } %>
+
+  <% comments.forEach(comment => { %>
+    <div class="comment-box">
+      <p><strong><%= comment.student_name %></strong> <small><%= comment.created_at.toLocaleString() %></small></p>
+      <p><em><%= comment.course_title %></em></p>
+      <p><%= comment.content %></p>
+
+      <% if (comment.reply) { %>
+        <div class="reply-box">
+          <p><strong>You replied:</strong></p>
+          <p><%= comment.reply %></p>
+        </div>
+      <% } else { %>
+        <form action="/instructor/comments/<%= comment.id %>/reply" method="POST">
+          <textarea name="reply" rows="2" placeholder="Write your reply..." required></textarea>
+          <button type="submit" class="submit-btn">💬 Reply</button>
+        </form>
+      <% } %>
+    </div>
+  <% }) %>
+
+  <a href="/instructor/dashboard" class="back-link">← Back to Dashboard</a>
+</div>
