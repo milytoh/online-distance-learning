@@ -55,6 +55,9 @@
       <% } %>
       <% if (isCompleted) { %>
         <p style="color: green; font-weight: bold;">✅ You have completed this course.</p>
+        
+          <p><a href="/course/<%= course.id %>/certificate" class="submit-btn" target="_blank">🎓 Download Certificate (PDF)</a></p>
+       
       <% } else { %>
         <form action="/course/<%= course.id %>/complete" method="POST" style="margin-top: 20px;">
           <button type="submit" style="

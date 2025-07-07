@@ -21,6 +21,12 @@ router.post(
   onlineCoursController.postComment
 );
 
+router.get(
+  "/course/:id/certificate",
+  isAuth,
+  onlineCoursController.downloadCertificate
+);
+
 
 
 

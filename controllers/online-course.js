@@ -1,3 +1,8 @@
+const path = require("path");
+
+const PDFDocument = require("pdfkit");
+const moment = require("moment");
+
 const db = require("../models/db");
 
 exports.getIndex = async (req, res, next) => {
@@ -19,12 +24,9 @@ exports.getIndex = async (req, res, next) => {
     console.error(err);
     res.send("Error loading courses");
   }
-
-
- };
+};
 
 exports.getAllCoures = async (req, res, next) => {
-  
   try {
     // Fetch all courses + instructor name
     const [courses] = await db.execute(`
@@ -33,7 +35,6 @@ exports.getAllCoures = async (req, res, next) => {
       JOIN users u ON c.instructor_id = u.id
     `);
 
-   
     res.render("onlinecourse/course-list", {
       title: "Student Dashboard",
       user: req.session.user,
@@ -88,14 +89,13 @@ exports.getCourseDetail = async (req, res, next) => {
       mediaFiles,
       isCompleted,
       isLogin: req.session.user,
-      comments:commentRows
+      comments: commentRows,
     });
   } catch (err) {
     console.error(err);
     res.send("Error loading course");
   }
-}
-
+};
 
 exports.markAsCompleted = async (req, res) => {
   const courseId = req.params.id;
@@ -133,4 +133,103 @@ exports.postComment = async (req, res) => {
 
 
 
+exports.downloadCertificate = async (req, res) => {
+  const courseId = req.params.id;
+  const studentId = req.session.user.id;
 
+  try {
+    const [[course]] = await db.execute(
+      "SELECT title FROM courses WHERE id = ?",
+      [courseId]
+    );
+    const [[student]] = await db.execute(
+      "SELECT name FROM users WHERE id = ?",
+      [studentId]
+    );
+
+    if (!course || !student) return res.send("Invalid data");
+
+    const [completionRows] = await db.execute(
+      "SELECT * FROM completions WHERE student_id = ? AND course_id = ?",
+      [studentId, courseId]
+    );
+    if (completionRows.length === 0)
+      return res.send("Complete the course to download your certificate.");
+
+    const doc = new PDFDocument({ size: "A4", layout: "landscape" });
+
+    res.setHeader(
+      "Content-disposition",
+      `attachment; filename=certificate-${courseId}.pdf`
+    );
+    res.setHeader("Content-type", "application/pdf");
+
+    doc.pipe(res);
+
+    // Background
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill("#fdfdfd");
+
+    // Load logo and center it
+    const logoPath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "images",
+      "weblogo.png"
+    );
+    const pageWidth = doc.page.width;
+
+    try {
+      doc.image(logoPath, (pageWidth - 100) / 2, 50, { width: 100 });
+    } catch (e) {
+      console.warn("Logo not found or unsupported image type");
+    }
+
+    doc.moveDown(5);
+
+    // Title
+    doc.fontSize(28).fillColor("#222").text("Certificate of Completion", {
+      align: "center",
+    });
+
+    doc.moveDown(1);
+    doc.fontSize(18).text(`This certifies that`, { align: "center" });
+
+    doc.moveDown(0.5);
+    doc.fontSize(24).fillColor("#FFD700").text(`${student.name}`, {
+      align: "center",
+    });
+
+    doc.moveDown(1);
+    doc
+      .fillColor("#333")
+      .fontSize(18)
+      .text(`has successfully completed the course`, {
+        align: "center",
+      });
+
+    doc.moveDown(0.5);
+    doc.fontSize(20).fillColor("#444").text(`${course.title}`, {
+      align: "center",
+    });
+
+    doc.moveDown(1.5);
+    doc
+      .fontSize(14)
+      .fillColor("#666")
+      .text(`Date: ${moment().format("MMMM Do, YYYY")}`, {
+        align: "center",
+      });
+
+    doc.moveDown(2);
+    doc
+      .fontSize(16)
+      .fillColor("#000")
+      .text("– Varify Learn LMS", { align: "center" });
+
+    doc.end();
+  } catch (err) {
+    console.error(err);
+    res.send("Error generating certificate");
+  }
+};
