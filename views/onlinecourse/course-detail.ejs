@@ -1,8 +1,8 @@
 <%- include('../includes/head.ejs') %>
 <title><%= title %></title>
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="styles/courses_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/courses_responsive.css">
+<link rel="stylesheet" type="text/css" href="/styles/courses_styles.css">
+<link rel="stylesheet" type="text/css" href="/styles/courses_responsive.css">
 <link rel="stylesheet" type="text/css" href="/styles/auth/signup.css">
 <link rel="stylesheet" type="text/css" href="/styles/dashboard/instructor.css">
 <link rel="stylesheet" type="text/css" href="/styles/dashboard/course-detail.css">
@@ -68,6 +68,23 @@
           ">✅ Mark as Completed</button>
         </form>
       <% } %>
+      
+      <hr>
+      <h3>💬 Comments & Questions</h3> <h3>💬 Comments (<%= comments.length %>)</h3>
+      
+      <form action="/course/<%= course.id %>/comment" method="POST" style="margin-bottom: 20px;">
+        <textarea name="content" rows="4" style="width: 100%;" placeholder="Ask a question or share your thoughts..." required></textarea>
+        <button type="submit" style="margin-top: 10px; background-color: #FFD700; padding: 10px 20px; border: none; border-radius: 5px;">Post Comment</button>
+      </form>
+      
+      <div class="comments-section">
+        <% comments.forEach(comment => { %>
+          <div class="comment-box">
+            <p><strong><%= comment.student_name %></strong> <small><%= comment.created_at.toLocaleString() %></small></p>
+            <p><%= comment.content %></p>
+          </div>
+        <% }) %>
+      </div>
       
     
       <p><a href="/student/dashboard">← Back to Dashboard</a></p>

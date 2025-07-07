@@ -70,12 +70,25 @@ exports.getCourseDetail = async (req, res, next) => {
 
     const isCompleted = completionRows.length > 0;
 
+    // Load all comments for this course
+    const [commentRows] = await db.execute(
+      `
+      SELECT c.*, u.name AS student_name
+      FROM comments c
+      JOIN users u ON c.student_id = u.id
+      WHERE c.course_id = ?
+      ORDER BY c.created_at DESC
+    `,
+      [courseId]
+    );
+
     res.render("onlinecourse/course-detail", {
       title: course.title,
       course,
       mediaFiles,
       isCompleted,
-      isLogin: req.session.user
+      isLogin: req.session.user,
+      comments:commentRows
     });
   } catch (err) {
     console.error(err);
@@ -99,5 +112,25 @@ exports.markAsCompleted = async (req, res) => {
     res.send("Error marking course as completed");
   }
 };
+
+exports.postComment = async (req, res) => {
+  const courseId = req.params.id;
+  const studentId = req.session.user.id;
+  const { content } = req.body;
+
+  try {
+    await db.execute(
+      "INSERT INTO comments (course_id, student_id, content) VALUES (?, ?, ?)",
+      [courseId, studentId, content]
+    );
+    res.redirect(`/course/${courseId}`);
+  } catch (err) {
+    console.error(err);
+    res.send("Error posting comment");
+  }
+};
+
+
+
 
 

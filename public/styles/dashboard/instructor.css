@@ -128,6 +128,17 @@ header {
     text-decoration: none;
     font-size: 14px;
   }
+  .comments-section {
+    margin-top: 20px;
+  }
+  
+  .comment-box {
+    background-color: #f4f4f4;
+    border-left: 4px solid #FFD700;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
   
   .edit-btn {
     background-color: #FFD700;
