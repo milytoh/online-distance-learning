@@ -19,15 +19,17 @@
 		</div>
 		<div class="home_content home_content-signup ">
 			<h1>LOGIN</h1>
-            <% if (error_msg) { %>
-                <div style="color: red"><%= error_msg %></div>
-              <% } %>
+           
 		</div>
 	</div>
 
-
-	
     <div class="form-container">
+      <% if (errorMessage[0]) { %>
+        <div class="flash error"><%= errorMessage %></div>
+      <% } %>
+      <% if (successMessage[0]) { %>
+        <div class="flash success"><%= successMessage %></div>
+      <% } %>
         <h2 class="bb">Login</h2>
         <form action="/login" method="POST">
                          

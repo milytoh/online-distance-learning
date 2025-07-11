@@ -43,12 +43,7 @@ app.use(
 // Flash middleware
 app.use(flash());
 
-// Make flash messages available in views
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success");
-  res.locals.error_msg = req.flash("error");
-  next();
-});
+
 
 //routes
 app.use(onlineCourseRouter);
@@ -60,3 +55,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
+ 

@@ -25,6 +25,9 @@
 
 	
     <div class="form-container">
+      <% if (errorMessage[0]) { %>
+        <div class="flash error"><%= errorMessage %></div>
+      <% } %>
         <h2 class="bb">Create Account</h2>
         <form action="/signup" method="POST">
           

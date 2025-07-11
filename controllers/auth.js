@@ -7,6 +7,7 @@ exports.getSignup = (req, res, next) => {
   res.render("auth/signup", {
     title: "Signup",
     isLogin: req.session.user,
+    errorMessage: req.flash("error"),
   });
 };
 
@@ -16,6 +17,16 @@ exports.postSignup = async (req, res, next) => {
   const password = req.body.password;
   const role = req.body.role;
 
+  const [existing] = await db.execute("SELECT * FROM users WHERE email = ?", [
+    email,
+  ]);
+  if (existing.length > 0) {
+    req.flash("error", " Email already exist!");
+    return req.session.save(() => {
+      res.redirect("/signup");
+    });
+  }
+
   const hashedPwd = await bcrypt.hash(password, 12);
 
   try {
@@ -24,8 +35,10 @@ exports.postSignup = async (req, res, next) => {
       [fullname, email, role, hashedPwd]
     );
 
-    console.log("user crea");
-    res.redirect("/login");
+    req.flash("success", "Registration successful, login to continue");
+    return req.session.save(() => {
+      res.redirect("/login");
+    });
   } catch (err) {
     console.error(err);
     res.send("Error creating account. Try another email.");
@@ -33,9 +46,12 @@ exports.postSignup = async (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
+
   res.render("auth/login", {
     title: "Login",
     isLogin: req.session.user,
+    errorMessage: req.flash('error'),
+    successMessage: req.flash('success')
   });
 };
 
@@ -48,17 +64,21 @@ exports.postLogin = async (req, res, next) => {
       email,
     ]);
 
-    console.log(rows);
     const user = rows[0];
 
     if (!user) {
-      return res.render("/login");
+      req.flash("error", "user not found");
+     return req.session.save(() => {
+        res.redirect('/login')
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       req.flash("error", "invalid email or password");
-      return res.redirect("/login");
+     return req.session.save(() => {
+        res.redirect("/login");
+      });
     }
 
     // Set session'
@@ -69,7 +89,9 @@ exports.postLogin = async (req, res, next) => {
     };
 
     req.flash("success", "Login successful!");
-    res.redirect("/");
+    req.session.save(() => {
+      res.redirect("/login");
+    });
   } catch (err) {
     console.error(err);
     res.send("Login failed");
@@ -83,7 +105,7 @@ exports.getLogout = (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Session destroy error:", err);
-      req.flash("error", "Logout failed");
+      
       return res.redirect("/");
     }
 
