@@ -46,12 +46,11 @@ exports.postSignup = async (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-
   res.render("auth/login", {
     title: "Login",
     isLogin: req.session.user,
-    errorMessage: req.flash('error'),
-    successMessage: req.flash('success')
+    errorMessage: req.flash("error"),
+    successMessage: req.flash("success"),
   });
 };
 
@@ -68,15 +67,15 @@ exports.postLogin = async (req, res, next) => {
 
     if (!user) {
       req.flash("error", "user not found");
-     return req.session.save(() => {
-        res.redirect('/login')
+      return req.session.save(() => {
+        res.redirect("/login");
       });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       req.flash("error", "invalid email or password");
-     return req.session.save(() => {
+      return req.session.save(() => {
         res.redirect("/login");
       });
     }
@@ -90,7 +89,12 @@ exports.postLogin = async (req, res, next) => {
 
     req.flash("success", "Login successful!");
     req.session.save(() => {
-      res.redirect("/login");
+      
+      if (user.role == "instructor") {
+        res.redirect("/instructor/dashboard");
+      } else {
+        res.redirect("/");
+      }
     });
   } catch (err) {
     console.error(err);
@@ -105,7 +109,7 @@ exports.getLogout = (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Session destroy error:", err);
-      
+
       return res.redirect("/");
     }
 
