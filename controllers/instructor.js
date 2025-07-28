@@ -120,7 +120,12 @@ exports.deleteCourse = async (req, res) => {
   const courseId = req.params.id;
   const instructorId = req.session.user.id;
 
+ 
   try {
+    // First delete all comments for this course
+    await db.execute("DELETE FROM comments WHERE course_id = ?", [courseId]);
+    // Delete completions
+    await db.execute("DELETE FROM completions WHERE course_id = ?", [courseId]);
     await db.execute("DELETE FROM courses WHERE id = ? AND instructor_id = ?", [
       courseId,
       instructorId,
