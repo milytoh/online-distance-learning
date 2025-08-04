@@ -235,6 +235,41 @@ h2 {
   color: #222;
 }
 
+/* student dashboard */
+.dashboard-container {
+  padding: 30px;
+  background-color: #f7f7f7;
+}
+.subtitle {
+  color: #555;
+}
+.s-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.course-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+}
+.course-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.btn-view {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #ffcc00;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
   
   
   /* Responsive */

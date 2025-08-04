@@ -12,6 +12,7 @@ const app = express();
 const onlineCourseRouter = require("./routes/online-course");
 const authRouter = require("./routes/auth");
 const instructorRouter = require("./routes/instructor");
+const studentRoutes = require("./routes/student");
 
 // Set EJS
 app.set("view engine", "ejs");
@@ -43,16 +44,14 @@ app.use(
 // Flash middleware
 app.use(flash());
 
-
-
 //routes
 app.use(onlineCourseRouter);
 app.use(authRouter);
 app.use(instructorRouter);
+app.use(studentRoutes);
 
 // Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
- 

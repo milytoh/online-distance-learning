@@ -37,8 +37,9 @@ exports.getIndex = async (req, res, next) => {
       user: req.session.user,
       courses,
       isLogin: req.session.user,
-      searchQuery
-    });
+      searchQuery,
+     
+    }); 
   } catch (err) {
     console.error(err);
     res.send("Error loading courses");

@@ -23,7 +23,19 @@
           <% } %> <% if (!isLogin) { %>
           <li class="main_nav_item"><a href="/signup">signup</a></li>
           <% } %>
-          <li class="main_nav_item"><a href="/instructor/dashboard">Instructor Dashboad</a></li>
+          <!-- <li class="main_nav_item">
+            <a href="/instructor/dashboard">Instructor Dashboad</a>
+          </li> -->
+          <% if (isLogin && isLogin.role == "instructor") { %>
+          <li class="main_nav_item">
+            <a href="/instructor/dashboard">Instructor Dashboad</a>
+          </li>
+          <% } %>
+          <% if (isLogin && isLogin.role == "student") { %>
+          <li class="main_nav_item">
+            <a href="/student/dashboard">student Dashboad</a>
+          </li>
+          <% } %>
           <li class="main_nav_item"><a href="/courses">courses</a></li>
           <!-- <li class="main_nav_item"><a href="/student/dashboard">student dashboard</a></li> -->
           <!-- <li class="main_nav_item"><a href="news.html">news</a></li> -->
